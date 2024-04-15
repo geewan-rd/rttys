@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 	"strconv"
 	"strings"
@@ -91,6 +92,8 @@ func Parse(c *cli.Context) *Config {
 			}
 		}
 	}
+	fmt.Printf("token: %v\n", cfg.WhiteList)
+	fmt.Printf("whiteList: %v\n", cfg.WhiteList)
 
 	if cfg.SslCert != "" && cfg.SslKey != "" {
 		_, err := os.Lstat(cfg.SslCert)
