@@ -92,7 +92,7 @@ func Parse(c *cli.Context) *Config {
 			}
 		}
 	}
-	fmt.Printf("token: %v\n", cfg.WhiteList)
+	fmt.Printf("token: %v\n", cfg.Token)
 	fmt.Printf("whiteList: %v\n", cfg.WhiteList)
 
 	if cfg.SslCert != "" && cfg.SslKey != "" {
