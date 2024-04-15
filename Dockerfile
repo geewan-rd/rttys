@@ -7,7 +7,6 @@ FROM golang:latest AS rttys
 WORKDIR /rttys-build
 COPY . .
 COPY --from=ui /rttys-ui/dist ui/dist
-COPY rttys.conf /usr/bin/rttys.conf
 
 RUN CGO_ENABLED=0 \
     VersionPath="rttys/version" \
@@ -17,4 +16,5 @@ RUN CGO_ENABLED=0 \
 
 FROM alpine:latest
 COPY --from=rttys /rttys-build/rttys /usr/bin/rttys
+COPY --from=rttys /rttys-build/rttys.conf /usr/bin/rttys.conf
 ENTRYPOINT ["/usr/bin/rttys"]
