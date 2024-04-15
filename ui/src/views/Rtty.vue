@@ -232,7 +232,7 @@ export default {
         if (msg.type === 'login') {
           if (msg.err === LoginErrorOffline) {
             this.$Message.error(this.$t('Device offline').toString());
-            this.$router.push('/');
+            // this.$router.push('/');
             return;
           } else if (msg.err === LoginErrorBusy) {
             this.$Message.error(this.$t('Sessions is full').toString());
