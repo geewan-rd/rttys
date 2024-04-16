@@ -207,7 +207,7 @@ func apiStart(br *broker) {
 
 	authorized.GET("/connect/:devid", func(c *gin.Context) {
 		if c.GetHeader("Upgrade") != "websocket" {
-			url := "/rtty/" + c.Param("devid")
+			url := ApiPrefix + "/rtty/" + c.Param("devid")
 			if c.Query("jwt") != "" {
 				url = url + "?jwt=" + c.Query("jwt")
 			}
