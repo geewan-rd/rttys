@@ -600,6 +600,12 @@ func apiStart(br *broker) {
 
 		path := c.Request.URL.Path
 		if path != "/" {
+
+			if strings.HasSuffix(path, "css") || strings.HasSuffix(path, "js") || strings.HasSuffix(path, "fonts") || strings.HasSuffix(path, "img") {
+				path = strings.ReplaceAll(path, ApiPrefix, "")
+				c.Request.URL.Path = path
+			}
+
 			f, err := fs.Open(path[1:])
 			if err != nil {
 				c.Request.URL.Path = "/"
