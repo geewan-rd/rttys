@@ -220,7 +220,7 @@ export default {
   mounted() {
     const protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
 
-    const socket = new WebSocket(protocol + location.host + `/connect/${this.devid}`);
+    const socket = new WebSocket(protocol + location.host + `/connect/${this.devid}?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTMzMjI5MjUsImlhdCI6MTcxMzIzNjUyNSwia2V5IjoidHJhbnNpcF9ydHR5cyJ9.06aPzkCGOX2pmm7WNC79X0V5_jMpXPJBh-TiRHRG3EE`);
     socket.binaryType = 'arraybuffer';
     this.socket = socket;
 
