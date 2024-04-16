@@ -220,11 +220,11 @@ export default {
   mounted() {
     const protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
     const getjwt = () => {
-      var q = window.location.search.substr(1)
-      var obj = {}
-      var arr = q.split("&")
-      for (var i = 0; i < arr.length; i++) {
-        var arr2 = arr[i].split("=")
+      const q = window.location.search.substr(1)
+      const obj = {}
+      const arr = q.split("&")
+      for (const i = 0; i < arr.length; i++) {
+        const arr2 = arr[i].split("=")
         obj[arr2[0]] = arr2[1]
       }
       return obj.jwt
