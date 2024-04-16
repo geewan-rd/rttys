@@ -89,7 +89,7 @@ export default {
           this.updateFontSize(size - 1);
       } else if (name === 'file') {
         this.$Message.info(this.$t('Please execute command "rtty -R" or "rtty -S" in current terminal!').toString());
-      } 
+      }
       // else if (name === 'about') {
       //   window.open('https://github.com/zhaojh329/rtty');
       // }
