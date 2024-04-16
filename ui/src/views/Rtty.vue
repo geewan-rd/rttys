@@ -89,16 +89,17 @@ export default {
           this.updateFontSize(size - 1);
       } else if (name === 'file') {
         this.$Message.info(this.$t('Please execute command "rtty -R" or "rtty -S" in current terminal!').toString());
-      } else if (name === 'about') {
-        window.open('https://github.com/zhaojh329/rtty');
       }
+      // else if (name === 'about') {
+      //   window.open('https://github.com/zhaojh329/rtty');
+      // }
 
       this.term.focus();
     },
     updateFontSize(size) {
       this.term.setOption('fontSize', size);
       this.fitAddon.fit();
-      this.axios.post('/fontsize', {size});
+      this.axios.post('/transip-control/fontsize', {size});
     },
     onUploadDialogClosed() {
       this.term.focus();
@@ -219,18 +220,8 @@ export default {
   },
   mounted() {
     const protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
-    const getjwt = () => {
-      const q = window.location.search.substr(1)
-      const obj = {}
-      const arr = q.split('&')
-      for (let i = 0; i < arr.length; i++) {
-        const arr2 = arr[i].split('=')
-        obj[arr2[0]] = arr2[1]
-      }
-      return obj.jwt
-    }
 
-    const socket = new WebSocket(protocol + location.host + `/connect/${this.devid}?jwt=${getjwt()}`);
+    const socket = new WebSocket(protocol + location.host + `/transip-control/connect/${this.devid}?jwt=${new URLSearchParams(window.location.href.split('?')[1]).get('jwt')}`);
     socket.binaryType = 'arraybuffer';
     this.socket = socket;
 
@@ -254,7 +245,7 @@ export default {
 
           this.openTerm();
 
-          this.axios.get('/fontsize').then(r => {
+          this.axios.get('/transip-control/fontsize').then(r => {
             this.term.setOption('fontSize', r.data.size);
             this.fitTerm();
           });
