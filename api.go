@@ -163,7 +163,6 @@ func apiStart(br *broker) {
 
 	authorized.POST("/fontsize", func(c *gin.Context) {
 		data := make(map[string]int)
-
 		err := c.BindJSON(&data)
 		if err != nil {
 			c.Status(http.StatusBadRequest)
@@ -601,7 +600,7 @@ func apiStart(br *broker) {
 		path := c.Request.URL.Path
 		if path != "/" {
 
-			if strings.HasSuffix(path, "css") || strings.HasSuffix(path, "js") || strings.HasSuffix(path, "fonts") || strings.HasSuffix(path, "img") {
+			if strings.HasSuffix(path, "css") || strings.HasSuffix(path, "js") || strings.HasSuffix(path, "img") || strings.HasSuffix(path, "ttf") || strings.HasSuffix(path, "woff") || strings.HasSuffix(path, "woff2") {
 				path = strings.ReplaceAll(path, ApiPrefix, "")
 				c.Request.URL.Path = path
 			}
