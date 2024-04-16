@@ -221,7 +221,7 @@ export default {
   mounted() {
     const protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
 
-    const socket = new WebSocket(protocol + location.host + `/connect/${this.devid}?jwt=${new URLSearchParams(window.location.href.split('?')[1]).get('jwt')}`);
+    const socket = new WebSocket(protocol + location.host + `/transip-control/connect/${this.devid}?jwt=${new URLSearchParams(window.location.href.split('?')[1]).get('jwt')}`);
     socket.binaryType = 'arraybuffer';
     this.socket = socket;
 
