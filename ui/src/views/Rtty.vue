@@ -219,8 +219,18 @@ export default {
   },
   mounted() {
     const protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
+    const getjwt = () => {
+      var q = window.location.search.substr(1)
+      var obj = {}
+      var arr = q.split("&")
+      for (var i = 0; i < arr.length; i++) {
+        var arr2 = arr[i].split("=")
+        obj[arr2[0]] = arr2[1]
+      }
+      return obj.jwt
+    }
 
-    const socket = new WebSocket(protocol + location.host + `/connect/${this.devid}?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MTMzMjI5MjUsImlhdCI6MTcxMzIzNjUyNSwia2V5IjoidHJhbnNpcF9ydHR5cyJ9.06aPzkCGOX2pmm7WNC79X0V5_jMpXPJBh-TiRHRG3EE`);
+    const socket = new WebSocket(protocol + location.host + `/connect/${this.devid}?jwt=${getjwt}`);
     socket.binaryType = 'arraybuffer';
     this.socket = socket;
 

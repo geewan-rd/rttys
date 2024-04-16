@@ -1,6 +1,7 @@
 const CompressionPlugin = require('compression-webpack-plugin')
 
 module.exports = {
+  publicPath:'/transip-control',
   productionSourceMap: false,
   chainWebpack: config => {
     config.plugin('html')
