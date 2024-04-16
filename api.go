@@ -595,11 +595,10 @@ func apiStart(br *broker) {
 		fs, _ := fs.Sub(staticFs, "ui/dist")
 
 		path := c.Request.URL.Path
-
-		if path != ApiPrefix {
+		if path != "/" {
 			f, err := fs.Open(path[1:])
 			if err != nil {
-				c.Request.URL.Path = ApiPrefix
+				c.Request.URL.Path = "/"
 				r.HandleContext(c)
 				return
 			}
