@@ -130,7 +130,9 @@ func apiStart(br *broker) {
 
 	r.Use(gin.Recovery())
 
-	authorized := r.Group("/", func(c *gin.Context) {
+	const ApiPrefix = "/transip-control"
+
+	authorized := r.Group(ApiPrefix, func(c *gin.Context) {
 		devid := c.Param("devid")
 		if devid != "" && authorizedDev(devid, cfg) {
 			return
@@ -292,18 +294,18 @@ func apiStart(br *broker) {
 		handleCmdReq(br, c)
 	})
 
-	r.Any("/web/:devid/:proto/:addr/*path", func(c *gin.Context) {
+	r.Any(ApiPrefix+"/web/:devid/:proto/:addr/*path", func(c *gin.Context) {
 		httpProxyRedirect(br, c)
 	})
 
-	r.GET("/authorized/:devid", func(c *gin.Context) {
+	r.GET(ApiPrefix+"/authorized/:devid", func(c *gin.Context) {
 		authorized := authorizedDev(c.Param("devid"), cfg) || httpAuth(cfg, c)
 		c.JSON(http.StatusOK, gin.H{
 			"authorized": authorized,
 		})
 	})
 
-	r.POST("/signin", func(c *gin.Context) {
+	r.POST(ApiPrefix+"/signin", func(c *gin.Context) {
 		var creds credentials
 
 		err := c.BindJSON(&creds)
@@ -328,7 +330,7 @@ func apiStart(br *broker) {
 		c.Status(http.StatusForbidden)
 	})
 
-	r.GET("/alive", func(c *gin.Context) {
+	r.GET(ApiPrefix+"/alive", func(c *gin.Context) {
 		if !httpAuth(cfg, c) {
 			c.AbortWithStatus(http.StatusUnauthorized)
 		} else {
@@ -336,7 +338,7 @@ func apiStart(br *broker) {
 		}
 	})
 
-	r.GET("/signout", func(c *gin.Context) {
+	r.GET(ApiPrefix+"/signout", func(c *gin.Context) {
 		cookie, err := c.Cookie("sid")
 		if err != nil || !httpSessions.Have(cookie) {
 			return
@@ -347,7 +349,7 @@ func apiStart(br *broker) {
 		c.Status(http.StatusOK)
 	})
 
-	r.POST("/signup", func(c *gin.Context) {
+	r.POST(ApiPrefix+"/signup", func(c *gin.Context) {
 		var creds credentials
 
 		err := c.BindJSON(&creds)
@@ -388,7 +390,7 @@ func apiStart(br *broker) {
 		c.Status(http.StatusOK)
 	})
 
-	r.GET("/isadmin", func(c *gin.Context) {
+	r.GET(ApiPrefix+"/isadmin", func(c *gin.Context) {
 		isAdmin := true
 
 		if cfg.LocalAuth || !isLocalRequest(c) {
@@ -398,7 +400,7 @@ func apiStart(br *broker) {
 		c.JSON(http.StatusOK, gin.H{"admin": isAdmin})
 	})
 
-	r.GET("/users", func(c *gin.Context) {
+	r.GET(ApiPrefix+"/users", func(c *gin.Context) {
 		loginUsername := getLoginUsername(c)
 		isAdmin := isAdminUsername(cfg, loginUsername)
 
@@ -444,7 +446,7 @@ func apiStart(br *broker) {
 		c.JSON(http.StatusOK, gin.H{"users": users})
 	})
 
-	r.POST("/bind", func(c *gin.Context) {
+	r.POST(ApiPrefix+"/bind", func(c *gin.Context) {
 		if cfg.LocalAuth || !isLocalRequest(c) {
 			username := getLoginUsername(c)
 			if !isAdminUsername(cfg, username) {
@@ -487,7 +489,7 @@ func apiStart(br *broker) {
 		c.Status(http.StatusOK)
 	})
 
-	r.POST("/unbind", func(c *gin.Context) {
+	r.POST(ApiPrefix+"/unbind", func(c *gin.Context) {
 		if cfg.LocalAuth || !isLocalRequest(c) {
 			username := getLoginUsername(c)
 			if !isAdminUsername(cfg, username) {
@@ -522,7 +524,7 @@ func apiStart(br *broker) {
 		c.Status(http.StatusOK)
 	})
 
-	r.POST("/delete", func(c *gin.Context) {
+	r.POST(ApiPrefix+"/delete", func(c *gin.Context) {
 		type deldata struct {
 			Devices []string `json:"devices"`
 		}
@@ -565,7 +567,7 @@ func apiStart(br *broker) {
 		c.Status(http.StatusOK)
 	})
 
-	r.GET("/file/:sid", func(c *gin.Context) {
+	r.GET(ApiPrefix+"/file/:sid", func(c *gin.Context) {
 		sid := c.Param("sid")
 		if fp, ok := br.fileProxy.Load(sid); ok {
 			fp := fp.(*fileProxy)
@@ -594,10 +596,10 @@ func apiStart(br *broker) {
 
 		path := c.Request.URL.Path
 
-		if path != "/" {
+		if path != ApiPrefix {
 			f, err := fs.Open(path[1:])
 			if err != nil {
-				c.Request.URL.Path = "/"
+				c.Request.URL.Path = ApiPrefix
 				r.HandleContext(c)
 				return
 			}
