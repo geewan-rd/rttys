@@ -230,7 +230,7 @@ export default {
       return obj.jwt
     }
 
-    const socket = new WebSocket(protocol + location.host + `/connect/${this.devid}?jwt=${getjwt}`);
+    const socket = new WebSocket(protocol + location.host + `/connect/${this.devid}?jwt=${getjwt()}`);
     socket.binaryType = 'arraybuffer';
     this.socket = socket;
 
