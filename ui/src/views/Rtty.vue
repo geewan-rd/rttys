@@ -222,9 +222,9 @@ export default {
     const getjwt = () => {
       const q = window.location.search.substr(1)
       const obj = {}
-      const arr = q.split("&")
-      for (const i = 0; i < arr.length; i++) {
-        const arr2 = arr[i].split("=")
+      const arr = q.split('&')
+      for (let i = 0; i < arr.length; i++) {
+        const arr2 = arr[i].split('=')
         obj[arr2[0]] = arr2[1]
       }
       return obj.jwt
