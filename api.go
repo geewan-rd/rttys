@@ -206,7 +206,7 @@ func apiStart(br *broker) {
 
 	authorized.GET("/connect/:devid", func(c *gin.Context) {
 		if c.GetHeader("Upgrade") != "websocket" {
-			url := ApiPrefix + "/#/rtty/" + c.Param("devid")
+			url := ApiPrefix + "/rtty/" + c.Param("devid")
 			if c.Request.URL.RawQuery != "" {
 				url = url + "?" + c.Request.URL.RawQuery
 			}
