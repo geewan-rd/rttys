@@ -341,8 +341,7 @@ export default {
       });
     },
     connectDevice(devid) {
-      // window.open('/transip-control/rtty/' + devid);
-      this.$router.push('/rtty/'+ devid);
+      window.open('/transip-control/rtty/' + devid);
     },
     connectDeviceWeb(dev) {
       let addr = '127.0.0.1';
