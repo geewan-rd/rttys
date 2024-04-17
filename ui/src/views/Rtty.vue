@@ -1,6 +1,10 @@
 <template>
   <div>
-    <div ref="terminal" :style="{height: termHeight + 'px', margin: '5px'}" @contextmenu.prevent="showContextmenu"/>
+    <div :style="{ color:'#fff', margin:'15px' }">
+      <h2>WebShell</h2>
+      <p :style="{ fontSize:'16px' }">当前设备：{{ this.deviceName }}</p>
+    </div>
+    <div ref="terminal" :style="{ width:'100vw', height: termHeight + 'px', margin: '15px'}" @contextmenu.prevent="showContextmenu"/>
     <Modal v-model="file.modal" :title="$t('Upload file to device')" @on-ok="doUploadFile" @on-cancel="onUploadDialogClosed">
       <Upload :before-upload="beforeUpload" action="#">
         <Button icon="ios-cloud-upload-outline">{{ $t("Select file") }}</Button>
@@ -37,14 +41,15 @@ export default {
   },
   data() {
     return {
+      deviceName:'',
       contextmenus: [
         {name: 'copy', caption: this.$t('Copy - Ctrl+Insert')},
         {name: 'paste', caption: this.$t('Paste - Shift+Insert')},
         {name: 'clear', caption: this.$t('Clear Scrollback')},
-        {name: 'font+', caption: this.$t('Font Size+')},
-        {name: 'font-', caption: this.$t('Font Size-')},
+        // {name: 'font+', caption: this.$t('Font Size+')},
+        // {name: 'font-', caption: this.$t('Font Size-')},
         {name: 'file', caption: this.$t('Upload or download file')},
-        {name: 'about', caption: this.$t('About')}
+        // {name: 'about', caption: this.$t('About')}
       ],
       file: {
         modal: false,
@@ -89,10 +94,9 @@ export default {
           this.updateFontSize(size - 1);
       } else if (name === 'file') {
         this.$Message.info(this.$t('Please execute command "rtty -R" or "rtty -S" in current terminal!').toString());
+      }else if (name === 'about') {
+        window.open('https://github.com/zhaojh329/rtty');
       }
-      // else if (name === 'about') {
-      //   window.open('https://github.com/zhaojh329/rtty');
-      // }
 
       this.term.focus();
     },
@@ -185,7 +189,7 @@ export default {
     openTerm() {
       const term = new Terminal({
         cursorBlink: true,
-        fontSize: 16
+        fontSize: 16,
       });
       this.term = term;
 
@@ -197,6 +201,7 @@ export default {
       term.loadAddon(overlayAddon);
 
       term.open(this.$refs['terminal']);
+      fitAddon.fit();
       term.focus();
 
       this.disposables.push(term.onData(data => this.sendTermData(data)));
@@ -220,8 +225,8 @@ export default {
   },
   mounted() {
     const protocol = (location.protocol === 'https:') ? 'wss://' : 'ws://';
-
-    const socket = new WebSocket(protocol + location.host + `/transip-control/connect/${this.devid}?jwt=${new URLSearchParams(window.location.href.split('?')[1]).get('jwt')}`);
+    this.deviceName = new URLSearchParams(window.location.href.split('?')[1]).get('name');
+    const socket = new WebSocket(protocol + location.host + `/connect/${this.devid}?jwt=${new URLSearchParams(window.location.href.split('?')[1]).get('jwt')}`);
     socket.binaryType = 'arraybuffer';
     this.socket = socket;
 
