@@ -633,7 +633,8 @@ func apiStart(br *broker) {
 
 		if cfg.SslCert != "" && cfg.SslKey != "" {
 			log.Info().Msgf("Listen user on: %s SSL on", cfg.AddrUser)
-			err = r.RunTLS(cfg.AddrUser, cfg.SslCert, cfg.SslKey)
+			//err = r.RunTLS(cfg.AddrUser, cfg.SslCert, cfg.SslKey)
+			err = r.Run(cfg.AddrUser)
 		} else {
 			log.Info().Msgf("Listen user on: %s SSL off", cfg.AddrUser)
 			err = r.Run(cfg.AddrUser)
