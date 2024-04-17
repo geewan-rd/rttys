@@ -28,7 +28,7 @@ const ReadFileBlkSize = 16 * 1024;
 const AckBlkSize = 4 * 1024;
 
 export default {
-  name: 'Home',
+  name: 'Rtty',
   components: {
     'Contextmenu': Contextmenu
   },
