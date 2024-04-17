@@ -1,10 +1,6 @@
 <template>
   <div>
-    <div :style="{ color:'#fff', margin:'15px' }">
-      <h2>WebShell</h2>
-      <p :style="{ fontSize:'16px' }">当前设备：{{ this.deviceName }}</p>
-    </div>
-    <div ref="terminal" :style="{ width:'100vw', height: termHeight + 'px', margin: '15px'}" @contextmenu.prevent="showContextmenu"/>
+    <div ref="terminal" :style="{ width:'100vw', height: termHeight + 'px', margin: '10px'}" @contextmenu.prevent="showContextmenu"/>
     <Modal v-model="file.modal" :title="$t('Upload file to device')" @on-ok="doUploadFile" @on-cancel="onUploadDialogClosed">
       <Upload :before-upload="beforeUpload" action="#">
         <Button icon="ios-cloud-upload-outline">{{ $t("Select file") }}</Button>
