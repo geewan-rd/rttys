@@ -17,5 +17,6 @@ RUN CGO_ENABLED=0 \
 FROM alpine:latest
 WORKDIR /root
 COPY --from=rttys /rttys-build/rttys /root/rttys
-COPY --from=rttys /rttys-build/rttys.conf /root/rttys.conf
+COPY --from=rttys /rttys-build/rttys_test.conf /root/rttys.conf
+COPY --from=rttys /rttys-build/ssl/* /etc/rttys/
 CMD ["/root/rttys"]

@@ -163,7 +163,6 @@ func apiStart(br *broker) {
 
 	authorized.POST("/fontsize", func(c *gin.Context) {
 		data := make(map[string]int)
-
 		err := c.BindJSON(&data)
 		if err != nil {
 			c.Status(http.StatusBadRequest)
@@ -207,9 +206,9 @@ func apiStart(br *broker) {
 
 	authorized.GET("/connect/:devid", func(c *gin.Context) {
 		if c.GetHeader("Upgrade") != "websocket" {
-			url := "/rtty/" + c.Param("devid")
-			if c.Query("jwt") != "" {
-				url = url + "?jwt=" + c.Query("jwt")
+			url := ApiPrefix + "/rtty/" + c.Param("devid")
+			if c.Request.URL.RawQuery != "" {
+				url = url + "?" + c.Request.URL.RawQuery
 			}
 			c.Redirect(http.StatusFound, url)
 			return
@@ -601,7 +600,7 @@ func apiStart(br *broker) {
 		path := c.Request.URL.Path
 		if path != "/" {
 
-			if strings.HasSuffix(path, "css") || strings.HasSuffix(path, "js") || strings.HasSuffix(path, "fonts") || strings.HasSuffix(path, "img") {
+			if strings.HasSuffix(path, "css") || strings.HasSuffix(path, "js") || strings.HasSuffix(path, "img") || strings.HasSuffix(path, "ttf") || strings.HasSuffix(path, "woff") || strings.HasSuffix(path, "woff2") {
 				path = strings.ReplaceAll(path, ApiPrefix, "")
 				c.Request.URL.Path = path
 			}
@@ -634,7 +633,8 @@ func apiStart(br *broker) {
 
 		if cfg.SslCert != "" && cfg.SslKey != "" {
 			log.Info().Msgf("Listen user on: %s SSL on", cfg.AddrUser)
-			err = r.RunTLS(cfg.AddrUser, cfg.SslCert, cfg.SslKey)
+			//err = r.RunTLS(cfg.AddrUser, cfg.SslCert, cfg.SslKey)
+			err = r.Run(cfg.AddrUser)
 		} else {
 			log.Info().Msgf("Listen user on: %s SSL off", cfg.AddrUser)
 			err = r.Run(cfg.AddrUser)
