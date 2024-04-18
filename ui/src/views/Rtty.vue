@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div ref="terminal" :style="{ width:'100%',height: termHeight, margin: '10px'}" @contextmenu.prevent="showContextmenu"/>
+    <div ref="terminal" :style="{ display:'flex', width:'100vw',height: '100vh'}" @contextmenu.prevent="showContextmenu"/>
     <Modal v-model="file.modal" :title="$t('Upload file to device')" @on-ok="doUploadFile" @on-cancel="onUploadDialogClosed">
       <Upload :before-upload="beforeUpload" action="#">
         <Button icon="ios-cloud-upload-outline">{{ $t("Select file") }}</Button>
@@ -290,7 +290,7 @@ export default {
 </script>
 
 <style>
-  .xterm .xterm-viewport {
+  /* .xterm .xterm-viewport {
     overflow: auto;
-  }
+  } */
 </style>
