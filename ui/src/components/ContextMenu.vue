@@ -1,5 +1,5 @@
 <template>
-  <div ref="content" class="content" :style="{top: axis.y + 'px', left: axis.x + 'px'}" v-if="visibility">
+  <div ref="content" class="content" :style="{top: axis.y + 'px', left: axis.x + 'px',opacity: visibility ? 1 : 0}">
     <a v-for="item in menus" :key="item.name" @click="onMenuClick(item.name)"
        :style="{'text-decoration': item.underline ? 'underline' : 'none'}">
       {{item.caption || item.name}}
@@ -53,7 +53,16 @@ export default {
     },
     show(e) {
       document.addEventListener('mousedown', this.close);
-      this.axis = {x: e.clientX, y: e.clientY};
+      const rect = document.body.getBoundingClientRect();
+      let left = e.clientX;
+      let top = e.clientY;
+      if (left + this.$refs.content.offsetWidth > rect.right) {
+        left = rect.right - this.$refs.content.offsetWidth;
+      }
+      if (top + (this.$refs.content.offsetHeight) > rect.bottom) {
+        top = rect.bottom - this.$refs.content.offsetHeight;
+      }
+      this.axis = {x: left, y: top};
       this.visibility = true;
     },
     onMenuClick(name) {
