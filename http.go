@@ -329,6 +329,7 @@ func httpProxyRedirect(br *broker, c *gin.Context) {
 
 	httpProxySessions.Store(sid, make(chan struct{}))
 
+	c.SetCookie("rtty-http-gateway", "http-proxy", 0, "", "", false, true)
 	c.SetCookie("rtty-http-sid", sid, 0, "", "", false, true)
 	c.SetCookie("rtty-http-devid", devid, 0, "", "", false, true)
 	c.SetCookie("rtty-http-proto", proto, 0, "", "", false, true)
