@@ -303,6 +303,15 @@ func httpProxyRedirect(br *broker, c *gin.Context) {
 		if err != nil {
 			host = c.Request.Host
 		}
+
+		if net.ParseIP(host) != nil {
+			host = c.Request.Header.Get("remotename")
+		}
+
+		remoteName1 := c.Request.Header.Get("remotename")
+		remoteName2 := c.Request.Header.Get("Remotename")
+		log.Info().Msgf("remoteName1:%s, remoteName2:%s", remoteName1, remoteName2)
+
 		location = "http://" + host
 		if cfg.HttpProxyPort != 80 {
 			location += fmt.Sprintf(":%d", cfg.HttpProxyPort)
