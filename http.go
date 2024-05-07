@@ -308,9 +308,11 @@ func httpProxyRedirect(br *broker, c *gin.Context) {
 			host = c.Request.Header.Get("remotename")
 		}
 
-		remoteName1 := c.Request.Header.Get("remotename")
-		remoteName2 := c.Request.Header.Get("Remotename")
-		log.Info().Msgf("remoteName1:%s, remoteName2:%s", remoteName1, remoteName2)
+		//remoteName1 := c.Request.Header.Get("remotename")
+		//remoteName2 := c.Request.Header.Get("Remotename")
+
+		log.Info().Msgf("Headers:[%+v]", c.Request.Header)
+		//log.Info().Msgf("remoteName1:%s, remoteName2:%s", remoteName1, remoteName2)
 
 		location = "http://" + host
 		if cfg.HttpProxyPort != 80 {
