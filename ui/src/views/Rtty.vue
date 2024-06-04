@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div :style="{ color:'#fff', margin:'5px', fontSize:'16px' }">
+      <span>当前设备：{{ this.deviceName }}</span>
+    </div>
     <div ref="terminal" :style="{ display:'flex', width:'100vw',height: '100vh'}" @contextmenu.prevent="showContextmenu"/>
     <Modal v-model="file.modal" :title="$t('Upload file to device')" @on-ok="doUploadFile" @on-cancel="onUploadDialogClosed">
       <Upload :before-upload="beforeUpload" action="#">
