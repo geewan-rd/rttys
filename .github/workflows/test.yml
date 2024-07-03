@@ -33,5 +33,5 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: egistry.cn-shanghai.aliyuncs.com/transocks/fobwifi:transip-rttys-${{ env.RELEASE_VERSION }}
+          tags: registry.cn-shanghai.aliyuncs.com/transocks/fobwifi:transip-rttys-${{ env.RELEASE_VERSION }}
 
